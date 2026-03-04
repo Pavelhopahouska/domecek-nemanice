@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Domeček Nemanice – ubytování v Českých Budějovicích</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #333333;
+      --muted: #777777;
+      --accent: #4caf50;
+      --border: #e5e5e5;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(255,255,255,0.96);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+    }
+    .container {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+    .logo {
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+    }
+    nav a {
+      margin-left: 20px;
+      font-size: 0.9rem;
+      color: var(--muted);
+      text-decoration: none;
+    }
+    nav a:hover {
+      color: var(--accent);
+    }
+    .hero {
+      padding: 80px 0 60px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+      gap: 40px;
+      align-items: center;
+    }
+    .hero h1 {
+      font-size: clamp(2.2rem, 4vw, 2.8rem);
+      margin-bottom: 12px;
+    }
+    .hero p.lead {
+      color: var(--muted);
+      margin-bottom: 24px;
+      max-width: 32rem;
+    }
+    .btn {
+      display: inline-block;
+      padding: 12px 26px;
+      border-radius: 999px;
+      border: 1px solid var(--accent);
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.95rem;
+      text-decoration: none;
+      transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s;
+      box-shadow: 0 6px 16px rgba(76,175,80,0.2);
+    }
+    .btn:hover {
+      background: #3f9a45;
+      box-shadow: 0 8px 22px rgba(76,175,80,0.28);
+    }
+    .btn-outline {
+      background: transparent;
+      color: var(--accent);
+      box-shadow: none;
+    }
+    .btn-outline:hover {
+      background: rgba(76,175,80,0.06);
+    }
+    .hero-meta {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-top: 16px;
+    }
+    .hero-img {
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .hero-img img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    section {
+      padding: 60px 0;
+      border-top: 1px solid var(--border);
+    }
+    section h2 {
+      font-size: 1.4rem;
+      margin-bottom: 10px;
+    }
+    section p.subtitle {
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin-bottom: 24px;
+    }
+    .two-cols {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+      gap: 32px;
+    }
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 18px;
+      margin-top: 12px;
+    }
+    .feature {
+      text-align: left;
+      font-size: 0.92rem;
+      color: var(--muted);
+    }
+    .feature strong {
+      display: block;
+      color: var(--text);
+      margin-bottom: 2px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.95rem;
+      margin-top: 12px;
+    }
+    th, td {
+      padding: 10px 8px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    th {
+      font-weight: 500;
+      color: var(--muted);
+    }
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 10px;
+    }
+    .gallery img {
+      width: 100%;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      object-fit: cover;
+      aspect-ratio: 4/3;
+      cursor: zoom-in;
+    }
+    .contact-box {
+      padding: 20px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      background: #fafafa;
+      max-width: 520px;
+    }
+    footer {
+      padding: 28px 0 40px;
+      font-size: 0.85rem;
+      color: var(--muted);
+      text-align: center;
+      border-top: 1px solid var(--border);
+      margin-top: 20px;
+    }
+
+    /* Lightbox */
+    .lightbox-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+    .lightbox-image {
+      max-width: 90vw;
+      max-height: 90vh;
+      border-radius: 8px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+    .lightbox-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 40px;
+      height: 40px;
+      border-radius: 999px;
+      border: none;
+      background: rgba(0,0,0,0.45);
+      color: #fff;
+      font-size: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.15s ease;
+    }
+    .lightbox-arrow:hover {
+      background: rgba(0,0,0,0.7);
+    }
+    .lightbox-arrow.left {
+      left: 20px;
+    }
+    .lightbox-arrow.right {
+      right: 20px;
+    }
+    .lightbox-backdrop::before {
+      content: "Kliknutím mimo fotku nebo klávesou Esc zavřete (← → přepínají fotky)";
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: rgba(255,255,255,0.8);
+      font-size: 0.8rem;
+      text-align: center;
+      max-width: 90vw;
+    }
+
+    @media (max-width: 800px) {
+      .hero, .two-cols {
+        grid-template-columns: 1fr;
+      }
+      .hero {
+        padding-top: 40px;
+      }
+      .lightbox-arrow {
+        width: 32px;
+        height: 32px;
+        font-size: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+<header>
+  <div class="container nav">
+    <div class="logo">DOMEČEK NEMANICE</div>
+    <nav>
+      <a href="#o">O ubytování</a>
+      <a href="#vybaveni">Vybavení</a>
+      <a href="#ceny">Ceny</a>
+      <a href="#fotky">Fotky</a>
+      <a href="#kontakt">Kontakt</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="container hero">
+    <div>
+      <h1>Domeček Nemanice</h1>
+      <p class="lead">Světlý a útulný domeček v klidné části Českých Budějovic, ideální až pro 5 osob k odpočinku i objevování jižních Čech.</p>
+      <a href="https://www.airbnb.cz/rooms/1454309958922067384?check_in=2026-03-08&check_out=2026-03-13&guests=1&adults=1&s=67&unique_share_id=53852941-e015-4310-b69a-f28caa22ed1d" class="btn" target="_blank" rel="noopener">Rezervovat přes Airbnb</a>
+      <span style="margin-left:10px">
+        <a href="#o" class="btn btn-outline">Více informací</a>
+      </span>
+      <div class="hero-meta">
+        • Česk&eacute; Budějovice – Hlubocká 176/1 • vlastní parkování • Wi‑Fi
+      </div>
+    </div>
+    <div class="hero-img">
+      <img src="hlavni-fotka.jpg" alt="Domeček Nemanice – ubytování v Českých Budějovicích">
+    </div>
+  </div>
+
+  <section id="o">
+    <div class="container two-cols">
+      <div>
+        <h2>O ubytování</h2>
+        <p class="subtitle">Soukromý domeček jen pro vás, pár minut autem/MHD od centra Českých Budějovic.</p>
+        <p>
+          V ložnici je k dispozici manželská postel, jednolůžková postel a rozkládací křeslo. V kuchyni/obýváku je rozkládací gauč. Celkem je tedy možné ubytovat 5 osob, zvířecí mazlíčci jsou ale v domě bohužel zakázáni. Je také možnost zapůjčení dětské postýlky zdarma.<br><br>
+          Dům má svůj dvoreček s venkovním posezením.<br>
+          Kuchyň je kompletně vybavená a obsahuje el. sporák se sklokeramickou varnou deskou, lednici, mrazák, varnou konvici, mikrovlnou troubu a toustovač.<br><br>
+          Ubytování se nachází na okraji Českých Budějovic v bezprostřední blízkosti MHD (cca 300 m). Cesta autobusem do centra trvá asi 10 minut. Nedaleko se také nachází restaurace, drogerie, tabák a obchod s potravinami.
+        </p>
+        <p>
+          Ubytování je po kompletní rekonstrukci, která byla dokončena v létě 2025.<br><br>
+          Prostory domu:<br>
+          Dvůr – 10 m²<br>
+          Vstupní předsíň – 3,3 m²<br>
+          WC – 1 m²<br>
+          Koupelna – 3 m²<br>
+          Předsálí s technickým zázemím – 2,9 m²<br>
+          Kuchyň s obývákem – 12 m²<br>
+          Ložnice – 16 m²
+        </p>
+      </div>
+      <div>
+        <h3>Lokalita</h3>
+        <p class="subtitle">Nemanice, Česk&eacute; Budějovice</p>
+        <p>Velmi klidná čtvrť s dobrou dostupností autem i MHD. Ideální výchozí bod pro výlety v Českých Budějovicích, Hluboké nad Vltavou nebo po krásném okolí.</p>
+        <iframe style="border:none" src="https://mapy.com/s/pakoluvese" width="100%" height="280" frameborder="0"></iframe>
+      </div>
+    </div>
+  </section>
+
+  <section id="vybaveni">
+    <div class="container">
+      <h2>Vybavení domečku</h2>
+      <p class="subtitle">Všechno, co potřebujete pro pohodlný pobyt.</p>
+      <div class="features">
+        <div class="feature">
+          <strong>Wi‑Fi</strong>
+          Neomezené připojení k internetu.
+        </div>
+        <div class="feature">
+          <strong>Plně vybavená kuchyň</strong>
+          Sporák, trouba, lednice, mrazák, mikrovlnka, toustovač i nádobí a základní vybavení.
+        </div>
+        <div class="feature">
+          <strong>Parkování u domu</strong>
+          Parkování přímo u objektu zdarma.
+        </div>
+        <div class="feature">
+          <strong>Lůžka</strong>
+          Ubytování je možné až pro 5 osob.
+        </div>
+        <div class="feature">
+          <strong>Plně vybavená koupelna</strong>
+          Ručníky, sprchový gel, fén na vlasy.
+        </div>
+        <div class="feature">
+          <strong>Pro malé děti</strong>
+          Nechybí ani nějaké hračky a knížky pro ty nejmenší.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="ceny">
+    <div class="container">
+      <h2>Ceny ubytování</h2>
+      <p class="subtitle">Aktuální ceny a dostupnost najdete vždy na Airbnb.</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Počet osob</th>
+            <th>Cena za noc</th>
+            <th>Poznámka</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1 osoba</td>
+            <td>1 405 Kč / noc</td>
+            <td>dítě do 2,99 let zdarma</td>
+          </tr>
+          <tr>
+            <td>2 osoby</td>
+            <td>1 405 Kč / noc</td>
+            <td>dítě do 2,99 let zdarma</td>
+          </tr>
+          <tr>
+            <td>3 osoby</td>
+            <td>1 592 Kč / noc</td>
+            <td>dítě do 2,99 let zdarma</td>
+          </tr>
+          <tr>
+            <td>4 osoby</td>
+            <td>1 780 Kč / noc</td>
+            <td>dítě do 2,99 let zdarma</td>
+          </tr>
+          <tr>
+            <td>5 osob</td>
+            <td>1 967 Kč / noc</td>
+            <td>dítě do 2,99 let zdarma</td>
+          </tr>
+        </tbody>
+      </table>
+      <p style="margin-top:16px;font-size:0.9rem;color:var(--muted);">
+        Přesnou cenu pro vaše data uvidíte po kliknutí na tlačítko „Rezervovat přes Airbnb“.
+      </p>
+    </div>
+  </section>
+
+  <section id="fotky">
+    <div class="container">
+      <h2>Fotky</h2>
+      <p class="subtitle">Nahlédněte, jak to u nás vypadá.</p>
+      <div class="gallery">
+        <a href="1.JPEG" data-full="1.JPEG" class="gallery-item">
+          <img src="1.JPEG" alt="1">
+        </a>
+        <a href="2.JPEG" data-full="2.JPEG" class="gallery-item">
+          <img src="2.JPEG" alt="2">
+        </a>
+        <a href="3.JPEG" data-full="3.JPEG" class="gallery-item">
+          <img src="3.JPEG" alt="3">
+        </a>
+        <a href="4.JPEG" data-full="4.JPEG" class="gallery-item">
+          <img src="4.JPEG" alt="4">
+        </a>
+        <a href="5.JPEG" data-full="5.JPEG" class="gallery-item">
+          <img src="5.JPEG" alt="5">
+        </a>
+        <a href="6.JPEG" data-full="6.JPEG" class="gallery-item">
+          <img src="6.JPEG" alt="6">
+        </a>
+        <a href="7.JPEG" data-full="7.JPEG" class="gallery-item">
+          <img src="7.JPEG" alt="7">
+        </a>
+        <a href="8.JPEG" data-full="8.JPEG" class="gallery-item">
+          <img src="8.JPEG" alt="8">
+        </a>
+        <a href="9.JPEG" data-full="9.JPEG" class="gallery-item">
+          <img src="9.JPEG" alt="9">
+        </a>
+        <a href="10.JPEG" data-full="10.JPEG" class="gallery-item">
+          <img src="10.JPEG" alt="10">
+        </a>
+        <a href="11.JPEG" data-full="11.JPEG" class="gallery-item">
+          <img src="11.JPEG" alt="11">
+        </a>
+        <a href="12.JPEG" data-full="12.JPEG" class="gallery-item">
+          <img src="12.JPEG" alt="12">
+        </a>
+        <a href="13.JPEG" data-full="13.JPEG" class="gallery-item">
+          <img src="13.JPEG" alt="13">
+        </a>
+        <a href="14.JPEG" data-full="14.JPEG" class="gallery-item">
+          <img src="14.JPEG" alt="14">
+        </a>
+        <a href="15.JPEG" data-full="15.JPEG" class="gallery-item">
+          <img src="15.JPEG" alt="15">
+        </a>
+        <a href="16.JPEG" data-full="16.JPEG" class="gallery-item">
+          <img src="16.JPEG" alt="16">
+        </a>
+        <a href="17.JPEG" data-full="17.JPEG" class="gallery-item">
+          <img src="17.JPEG" alt="17">
+        </a>
+        <a href="18.JPEG" data-full="18.JPEG" class="gallery-item">
+          <img src="18.JPEG" alt="18">
+        </a>
+        <a href="19.JPEG" data-full="19.JPEG" class="gallery-item">
+          <img src="19.JPEG" alt="19">
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section id="kontakt">
+    <div class="container">
+      <h2>Kontakt a rezervace</h2>
+      <p class="subtitle">Máte dotaz nebo chcete rezervovat termín? Napište krátký vzkaz, ozvu se vám co nejdříve.</p>
+
+      <div class="contact-box">
+        <form id="contact-form">
+          <div style="margin-bottom:10px;">
+            <label for="name" style="display:block;font-size:0.9rem;margin-bottom:4px;">Jméno</label>
+            <input type="text" id="name" name="from_name" required
+                   style="width:100%;padding:8px 10px;border-radius:8px;border:1px solid var(--border);font-family:inherit;">
+          </div>
+          <div style="margin-bottom:10px;">
+            <label for="email" style="display:block;font-size:0.9rem;margin-bottom:4px;">E‑mail</label>
+            <input type="email" id="email" name="from_email" required
+                   style="width:100%;padding:8px 10px;border-radius:8px;border:1px solid var(--border);font-family:inherit;">
+          </div>
+          <div style="margin-bottom:10px;">
+            <label for="message" style="display:block;font-size:0.9rem;margin-bottom:4px;">Zpráva</label>
+            <textarea id="message" name="message" rows="4" required
+                      style="width:100%;padding:8px 10px;border-radius:8px;border:1px solid var(--border);font-family:inherit;resize:vertical;"></textarea>
+          </div>
+          <button type="submit" class="btn">Odeslat zprávu</button>
+          <div id="form-status" style="margin-top:10px;font-size:0.9rem;color:var(--muted);"></div>
+        </form>
+
+        <hr style="margin:20px 0;border:none;border-top:1px solid var(--border);">
+
+        <p><strong>E‑mail:</strong> hopahopa@seznam.cz</p>
+        <p><strong>Telefon:</strong> +420 725 33 66 77</p>
+        <p style="margin-top:10px;">Nejjednodušší je rezervace přes Airbnb – uvidíte volné termíny i konečnou cenu, můžeme se ale domluvit i napřímo.</p>
+        <p style="margin-top:16px;">
+          <a href="https://www.airbnb.cz/rooms/1454309958922067384?check_in=2026-03-08&check_out=2026-03-13&guests=1&adults=1&s=67&unique_share_id=53852941-e015-4310-b69a-f28caa22ed1d" class="btn" target="_blank" rel="noopener">Rezervovat přes Airbnb</a>
+        </p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="container">
+    &copy; 2026 Domeček Nemanice, Česk&eacute; Budějovice
+  </div>
+</footer>
+
+<!-- EmailJS SDK -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+<script>
+  // Smooth scroll pro odkazy v menu
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+
+  // Lightbox s navigací
+  const items = Array.from(document.querySelectorAll('.gallery-item'));
+  let currentIndex = -1;
+  let backdrop = null;
+  let imgEl = null;
+
+  function openLightbox(index) {
+    currentIndex = index;
+    const src = items[currentIndex].getAttribute('data-full') || items[currentIndex].href;
+
+    backdrop = document.createElement('div');
+    backdrop.className = 'lightbox-backdrop';
+
+    imgEl = document.createElement('img');
+    imgEl.className = 'lightbox-image';
+    imgEl.src = src;
+    imgEl.alt = items[currentIndex].querySelector('img')?.alt || '';
+
+    const btnPrev = document.createElement('button');
+    btnPrev.className = 'lightbox-arrow left';
+    btnPrev.innerHTML = '❮';
+
+    const btnNext = document.createElement('button');
+    btnNext.className = 'lightbox-arrow right';
+    btnNext.innerHTML = '❯';
+
+    btnPrev.addEventListener('click', function(e) {
+      e.stopPropagation();
+      showPrev();
+    });
+    btnNext.addEventListener('click', function(e) {
+      e.stopPropagation();
+      showNext();
+    });
+
+    backdrop.appendChild(imgEl);
+    backdrop.appendChild(btnPrev);
+    backdrop.appendChild(btnNext);
+    document.body.appendChild(backdrop);
+
+    backdrop.addEventListener('click', closeLightbox);
+    document.addEventListener('keydown', keyHandler);
+  }
+
+  function updateImage() {
+    const src = items[currentIndex].getAttribute('data-full') || items[currentIndex].href;
+    imgEl.src = src;
+    imgEl.alt = items[currentIndex].querySelector('img')?.alt || '';
+  }
+
+  function showNext() {
+    currentIndex = (currentIndex + 1) % items.length;
+    updateImage();
+  }
+
+  function showPrev() {
+    currentIndex = (currentIndex - 1 + items.length) % items.length;
+    updateImage();
+  }
+
+  function keyHandler(e) {
+    if (!backdrop) return;
+    if (e.key === 'Escape') {
+      closeLightbox();
+    } else if (e.key === 'ArrowRight') {
+      showNext();
+    } else if (e.key === 'ArrowLeft') {
+      showPrev();
+    }
+  }
+
+  function closeLightbox() {
+    if (backdrop) {
+      backdrop.remove();
+      backdrop = null;
+      imgEl = null;
+      document.removeEventListener('keydown', keyHandler);
+    }
+  }
+
+  items.forEach((item, index) => {
+    item.addEventListener('click', function(e) {
+      e.preventDefault();
+      openLightbox(index);
+    });
+  });
+
+  // EmailJS – inicializace a odeslání formuláře
+  (function() {
+    emailjs.init({
+      publicKey: '9GeqZNLcJsCFxZxPt'
+    });
+  })();
+
+  const form = document.getElementById('contact-form');
+  const statusEl = document.getElementById('form-status');
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    statusEl.textContent = 'Odesílám…';
+
+    emailjs.sendForm('service_tmvrpgt', 'template_3mxuvyy', this)
+      .then(function() {
+        statusEl.textContent = 'Zpráva byla úspěšně odeslána. Děkuji!';
+        form.reset();
+      }, function(error) {
+        console.error('FAILED...', error);
+        statusEl.textContent = 'Omlouvám se, něco se pokazilo. Zkuste to prosím později.';
+      });
+  });
+</script>
+</body>
+</html>
